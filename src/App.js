@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Header from "./components/Header";
+import Routess from "./components/Routess";
+import { BrowserRouter as Router } from "react-router-dom";
 
-function App() {
+export const App = () => {
+  const [cartItems, setCartItems] = useState([]);
+
+  const handleAddProduct = (product) => {
+    const productExist = cartItems.find((item) => item.id === product.id);
+    if (!productExist) {
+      setCartItems([...cartItems, product]);
+    }
+  };
+
+  const handleRemoveProduct = (product) => {
+    const updatedCart = cartItems.filter((item) => item.id !== product.id);
+    setCartItems(updatedCart);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Header />
+        <Routess
+          cartItems={cartItems}
+          handleAddProduct={handleAddProduct}
+          handleRemoveProduct={handleRemoveProduct}
+        />
+      </Router>
     </div>
   );
-}
+};
 
 export default App;
